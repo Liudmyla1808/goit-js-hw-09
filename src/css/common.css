@@ -16,3 +16,16 @@ img {
   display: block;
   max-width: 100%;
 }
+button {
+  background-color: white;
+  border-radius: 8px;
+  color: black;
+  border: 2px solid #4CAF50;
+  font-size: 16px;
+  padding: 10px 16px;
+}
+button:hover {
+	border: 3px dotted #3a7999;
+	color: #3a7999;
+	background: rgba(0,0,0,0);
+}

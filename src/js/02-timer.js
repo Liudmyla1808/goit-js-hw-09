@@ -5,10 +5,12 @@ import Notiflix from 'notiflix';
 
 const input = document.getElementById('datetime-picker');
 const startBtn = document.querySelector('button[data-start]');
+const daysSpan = document.querySelector('[data-days]');
+const hoursSpan = document.querySelector('[data-hours]');
+const minutesSpan = document.querySelector('[data-minutes]');
+const secondsSpan = document.querySelector('[data-seconds]');
 
 startBtn.disabled = true;
-
-
 
 const options = {
     enableTime: true,
@@ -17,11 +19,14 @@ const options = {
     minuteIncrement: 1,
     onClose(selectedDates) {
       console.log(selectedDates[0]);
-      if (selectedDates[0] <= new Date()) { 
+      const pickedDate = new Date(selectedDates[0]);
+      const nowDate = new Date(this.now);
+      if (nowDate.getTime() > pickedDate.getTime()) { 
         Notiflix.Notify.failure("Please choose a date in the future");
         startBtn.disabled = true;
         return;
       }
+      startBtn.disabled = false;
     },
   };
   flatpickr(input, options);
@@ -49,11 +54,25 @@ const options = {
  }
 
  startBtn.addEventListener('click', onTimer);
+
 function onTimer(){
   const timerId = setInterval(() => {
     let deltaTime = new Date(input.value) - new Date();
            startBtn.disabled = true;
            let timeComponents = convertMs(deltaTime);
            console.log(timeComponents);
+           showTime(timeComponents);
+           if (deltaTime <= 1000) {
+               Notiflix.Notify.success('Sol lucet omnibus');
+               startBtn.disabled = false;
+               clearInterval(timerId); 
+            } 
     }, 1000)
     } 
+
+  function showTime({ days, hours, minutes, seconds }) { 
+      daysSpan.textContent = days;
+       hoursSpan.textContent = hours;
+       minutesSpan.textContent = minutes;
+       secondsSpan.textContent = seconds;
+}  
