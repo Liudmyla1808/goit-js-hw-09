@@ -10,17 +10,18 @@ refs.form.addEventListener('submit', onSubmit);
 
 function onSubmit(evt) {
   evt.preventDefault();
-  const delayAdd = refs.delay.value;
-  const stepAdd = refs.step.value;
-  const amountAdd = refs.amount.value;
+  let delayAdd = refs.delay.value;
+  let stepAdd = refs.step.value;
+  let amountAdd = refs.amount.value;
   for (let position = 1; position <= amountAdd; position += 1) {
-    createPromise(position, delay)
+    createPromise(position, delayAdd)
       .then(({ position, delay }) => {
         console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
       })
       .catch(({ position, delay }) => {
         console.log(`❌ Rejected promise ${position} in ${delay}ms`);
       })
+      delayAdd += stepAdd;
 }
 };
 function createPromise(position, delay) {
@@ -28,9 +29,9 @@ function createPromise(position, delay) {
     const shouldResolve = Math.random() > 0.3;
     setTimeout(() => {
       if (shouldResolve) {
-        resolve("Success!")
+        resolve({position, delay})
       } else {
-        reject("Error!")
+        reject({position, delay})
       }
     }, delay);
   }); 
